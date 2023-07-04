@@ -7,21 +7,35 @@ class Game
 
   def initialize
     # @secret_word = random_word
-    @secret_word = "table"
+    @secret_word = "tablet"
     @representation = Array.new(secret_word.length, "_")
     @matched_letters = []
+    @unmatched_letters = []
     @counter = 10
   end
 
   def start_game
     puts display_intro(secret_word.length)
-    puts display_turn(counter)
-    letter = take_input
-    matched_letter?(letter)
-    display_representation
+    game_loop
   end
 
   private
+
+  def game_loop
+    return puts display_game_over(secret_word) if counter.zero?
+    return puts display_game_win(secret_word) if representation.join("") == secret_word
+
+    puts display_turn(counter)
+    letter = take_input
+    matched_letter?(letter)
+    puts display_representation
+    puts display_unmatched_letters
+    game_loop
+  end
+
+  def display_unmatched_letters
+    puts "Unmatched letters: #{unmatched_letters.join(" ")}" unless unmatched_letters.empty?
+  end
 
   def display_representation
     word = secret_word.split("")
@@ -32,14 +46,19 @@ class Game
       representation[index] = word[index]
     end
 
-    p representation.join(" ")
+    "Secret word: #{representation.join(" ")}"
   end
 
   def matched_letter?(letter)
     if secret_word.include?(letter)
+      puts display_match
       matched_letters << letter
+    elsif unmatched_letters.include?(letter)
+      puts display_double_letter
     else
-      puts "No match this time :("
+      puts display_no_match
+      unmatched_letters << letter
+      self.counter -= 1
     end
   end
 
@@ -58,7 +77,7 @@ class Game
   end
 
   def valid_input?(input)
-    /^[[:alpha:]]+$/.match?(input)
+    /^[[:alpha:]]+$/.match?(input) && input.length == 1 ? true : false
   end
 end
 
