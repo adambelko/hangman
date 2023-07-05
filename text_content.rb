@@ -1,7 +1,17 @@
 # frozen_string_literal: true
 
 module TextContent
-  def display_intro(secret_word)
+  def display_intro
+    <<~HEREDOC
+
+      Welcome to the game Hangman!
+      Type "1" for a new game.
+      Type "2" to load a game.
+
+    HEREDOC
+  end
+
+  def display_new_game(secret_word)
     <<~HEREDOC
 
       Secret word has been selected and it's #{secret_word} letters long.
@@ -15,7 +25,13 @@ module TextContent
     HEREDOC
   end
 
-  def display_double_letter
+  def display_invalid_input_start_game
+    <<~HEREDOC
+      \e[31mInvalid input. Please select between option 1 and 2\e[0m
+    HEREDOC
+  end
+
+  def display_letter_used_already
     <<~HEREDOC
       \e[31mYou used this letter already.\e[0m
     HEREDOC
@@ -24,7 +40,7 @@ module TextContent
   def display_turn(counter)
     <<~HEREDOC
 
-      #{counter} attempts left. Enter the letter.
+      #{counter} attempts left. Enter the letter or  write "save" to save the game.
     HEREDOC
   end
 
@@ -57,8 +73,8 @@ module TextContent
   def display_game_win(secret_word)
     <<~HEREDOC
 
-      \e[32m#Well done! You solved the word!\e[0m
-      \e[32m#The secret word is "#{secret_word}".\e[0m
+      \e[32mWell done! You solved the word!\e[0m
+      \e[32mThe secret word is "#{secret_word}".\e[0m
 
     HEREDOC
   end

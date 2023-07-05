@@ -15,21 +15,39 @@ class Game
   end
 
   def start_game
-    puts display_intro(secret_word.length)
-    game_loop
+    puts display_intro
+    option = start_game_valid_input?
+    option == "1" ? new_game : load_game
   end
 
   private
 
+  def new_game
+    puts display_new_game(secret_word.length)
+    game_loop
+  end
+
+  def load_game
+    puts "Loaded game"
+  end
+
+  def save_game
+    puts "game saved"
+  end
+
   def game_loop
-    return puts display_game_over(secret_word) if counter.zero?
     return puts display_game_win(secret_word) if representation.join("") == secret_word
+    return puts display_game_over(secret_word) if counter.zero?
 
     puts display_turn(counter)
-    letter = take_input
+    input = take_input
+    return save_game if input == "save"
+
+    letter = input
     matched_letter?(letter)
     puts display_representation
     puts display_unmatched_letters
+
     game_loop
   end
 
@@ -54,7 +72,7 @@ class Game
       puts display_match
       matched_letters << letter
     elsif unmatched_letters.include?(letter)
-      puts display_double_letter
+      puts display_letter_used_already
     else
       puts display_no_match
       unmatched_letters << letter
@@ -77,7 +95,15 @@ class Game
   end
 
   def valid_input?(input)
-    /^[[:alpha:]]+$/.match?(input) && input.length == 1 ? true : false
+    input == "save" || /^[[:alpha:]]+$/.match?(input) && input.length == 1 ? true : false
+  end
+
+  def start_game_valid_input?
+    input = gets.chomp
+    return input if %w[1 2].include?(input)
+
+    puts display_invalid_input_start_game
+    start_game_valid_input?
   end
 end
 
