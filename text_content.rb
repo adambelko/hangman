@@ -19,22 +19,38 @@ module TextContent
     HEREDOC
   end
 
-  def display_load_game
+  def display_load_game(file_name, representation)
     <<~HEREDOC
 
-      Game has been loaded.
+      "#{file_name}" game has been loaded.
+      Secret word is: #{representation}
+    HEREDOC
+  end
+
+  def display_write_file_name
+    <<~HEREDOC
+
+      Type the name of a file you want to save this game to.
+    HEREDOC
+  end
+
+  def display_saved_game_info(file_name)
+    <<~HEREDOC
+
+      You saved the game as #{file_name}.yml
+      Remember this so you can load it later on.
     HEREDOC
   end
 
   def display_invalid_input
     <<~HEREDOC
-      \e[31mInvalid character. Please Try again.\e[0m
+      \e[31mInvalid input. Please Try again.\e[0m
     HEREDOC
   end
 
   def display_invalid_input_start_game
     <<~HEREDOC
-      \e[31mInvalid input. Please select between option 1 and 2\e[0m
+      \e[31mInvalid input. Please select between option 1 and 2.\e[0m
     HEREDOC
   end
 
@@ -54,7 +70,7 @@ module TextContent
   def display_no_match
     <<~HEREDOC
 
-      No match this time :(#{" "}
+      No match this time :(.#{" "}
 
     HEREDOC
   end
@@ -72,7 +88,7 @@ module TextContent
 
       \e[31mGame Over!\e[0m
 
-      The secret word is #{secret_word}
+      The secret word was "#{secret_word}".
 
     HEREDOC
   end

@@ -1,0 +1,14 @@
+---
+- !ruby/object:Game
+  secret_word: tablet
+  representation:
+  - _
+  - _
+  - _
+  - _
+  - e
+  - _
+  matched_letters:
+  - e
+  unmatched_letters: []
+  counter: 10
