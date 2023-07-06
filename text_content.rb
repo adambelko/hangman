@@ -11,11 +11,18 @@ module TextContent
     HEREDOC
   end
 
-  def display_new_game(secret_word)
+  def display_new_game(secret_word, counter)
     <<~HEREDOC
 
       Secret word has been selected and it's #{secret_word} letters long.
-      You have 10 incorrect guesses to solve it. Good Luck!
+      You have #{counter} incorrect guesses to solve it. Good Luck!
+    HEREDOC
+  end
+
+  def display_load_game
+    <<~HEREDOC
+
+      Game has been loaded.
     HEREDOC
   end
 

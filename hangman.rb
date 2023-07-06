@@ -1,3 +1,4 @@
+require "yaml"
 require "./text_content"
 
 class Game
@@ -23,16 +24,30 @@ class Game
   private
 
   def new_game
-    puts display_new_game(secret_word.length)
+    puts display_new_game(secret_word.length, counter)
     game_loop
   end
 
   def load_game
-    puts "Loaded game"
+    loaded_data = Psych.safe_load_file("./test.yml", permitted_classes: [Game])
+    game = loaded_data.first
+    self.secret_word = game.secret_word
+    self.representation = game.representation
+    self.matched_letters = game.matched_letters
+    self.unmatched_letters = game.unmatched_letters
+    self.counter = game.counter
+
+    p loaded_data
+    puts display_load_game
+    puts "Secret word: #{representation.join(" ")}"
+    game_loop
   end
 
   def save_game
-    puts "game saved"
+    File.open("./test.yml", "w") { |f| YAML.dump([] << self, f) }
+    puts
+    puts "Game saved"
+    Game.new.start_game
   end
 
   def game_loop
